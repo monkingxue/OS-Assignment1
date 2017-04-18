@@ -1,6 +1,12 @@
 #ifndef OS_DEFINE_H_
 #define OS_DEFINE_H_
 
+#if __APPLE__ && __MACH__
+#include <sys/ucontext.h>
+#else
+#include <ucontext.h>
+#endif
+
 // contants for yoroutines
 #define STACK_SIZE (1024 * 1024)
 #define INIT_CAPACITY 16
