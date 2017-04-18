@@ -1,13 +1,29 @@
 #ifndef OS_DEFINE_H_
 #define OS_DEFINE_H_
 
+#include <setjmp.h>
+
 #if __APPLE__ && __MACH__
+
+#ifdef __cplusplus
+
+extern "C" {
 #include <sys/ucontext.h>
+#include <ucontext.h>
+int getcontext(ucontext_t *);
+int setcontext(const ucontext_t *);
+void makecontext(ucontext_t *, void (*)(), int, ...);
+int swapcontext(ucontext_t *, const ucontext_t *);
+};
+
+#endif
+
+
 #else
 #include <ucontext.h>
 #endif
 
-// contants for yoroutines
+// constants for yoroutines
 #define STACK_SIZE (1024 * 1024)
 #define INIT_CAPACITY 16
 
