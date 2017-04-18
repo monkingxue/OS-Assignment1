@@ -1,7 +1,6 @@
 #ifndef OS_SCHEDULER_H
 #define OS_SCHEDULER_H
 
-#include <exception>
 #include <iostream>
 #include <string>
 
@@ -24,9 +23,9 @@ public:
 
     void enlarge_yc_list();
 
-    int get_cur_id() {
-        return this->cur_id;
-    }
+    int get_cur_id() { return this->cur_id; }
+
+    void set_cur_id(int id) { this->cur_id = id; }
 
     int get_size() { return this->size; }
 
@@ -34,9 +33,9 @@ public:
 
     int assign_size();
 
-    void push_yc(int id, Yoroutine *yc);
+    void push_yc(Yoroutine *yc);
 
-    Yoroutine *get_yc();
+    Yoroutine *get_yc(int id) { return this->yc_list[id]; }
 
 private:
     int size;
@@ -46,6 +45,6 @@ private:
 
 };
 
-static Scheduler scheduler = Scheduler(STACK_SIZE, INIT_CAPACITY);
+static Scheduler *root = new Scheduler(STACK_SIZE, INIT_CAPACITY);
 
 #endif //OS_SCHEDULER_H

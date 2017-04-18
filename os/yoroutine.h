@@ -6,6 +6,7 @@
 
 #include "define.h"
 #include "scheduler.h"
+#include "tool.h"
 
 typedef void (*yc_fn)(void *arg);
 
@@ -17,7 +18,7 @@ public:
     int status;
     int id;
 
-    Yoroutine(yc_fn func, void * arg);
+    Yoroutine(yc_fn func, void *arg);
 
     ~Yoroutine();
 
@@ -25,19 +26,25 @@ public:
 
     bool set_status();
 
+    void resume();
+
+    void yield() { _pause(YOROUTINE_SUSPENDED); }
+
+    void block() { _pause(YOROUTINE_BLOCKED); }
+
 private:
     ucontext_t ctx;
     Scheduler *scheduler;
     size_t stack_size;
 
-    static void pause(int to_status);
-    static int save_stack();
+    void _pause(int to_status);
 
-    void resume(int id);
+    int _save_stack();
 
-    void yield() {pause(YOROUTINE_SUSPENDED);}
+    void _compress_yclist(int idx);
 
-    void block() {pause(YOROUTINE_BLOCKED);}
+    void _wrap_fn(uint32_t low_bits, uint32_t high_bits);
+
 };
 
 #endif //OS_YOROUTINE_H

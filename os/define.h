@@ -9,7 +9,6 @@
 
 extern "C" {
 #include <sys/ucontext.h>
-#include <ucontext.h>
 int getcontext(ucontext_t *);
 int setcontext(const ucontext_t *);
 void makecontext(ucontext_t *, void (*)(), int, ...);

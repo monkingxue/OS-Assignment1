@@ -28,8 +28,11 @@ Scheduler::Scheduler(int s_size, int init_cap) {
 Scheduler::~Scheduler() {
     for (int i = 0; i < this->size; i++) {
         Yoroutine *yc = this->yc_list[i];
-        free(yc->stack);
-        free(yc);
+        if(yc != nullptr) {
+            free(yc->stack);
+            yc->stack = nullptr;
+            delete yc;
+        }
     }
 
     free(this->stack);
@@ -53,7 +56,7 @@ int Scheduler::assign_size() {
     return new_id;
 }
 
-void Scheduler::push_yc(int id, Yoroutine *yc) {
+void Scheduler::push_yc(Yoroutine *yc) {
     if (this->size == this->capaity) {
         try {
             this->enlarge_yc_list();
@@ -62,5 +65,5 @@ void Scheduler::push_yc(int id, Yoroutine *yc) {
         }
     }
 
-    this->yc_list[id] = yc;
+    this->yc_list[yc->id] = yc;
 }
