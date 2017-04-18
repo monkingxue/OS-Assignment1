@@ -17,7 +17,7 @@ public:
     int status;
     int id;
 
-    Yoroutine();
+    Yoroutine(yc_fn func, void * arg);
 
     ~Yoroutine();
 
