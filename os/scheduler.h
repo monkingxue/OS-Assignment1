@@ -28,9 +28,15 @@ public:
         return this->cur_id;
     }
 
-    int get_size() {
-        return this->size;
-    }
+    int get_size() { return this->size; }
+
+    void set_size() { this->size += 1; }
+
+    int assign_size();
+
+    void push_yc(int id, Yoroutine *yc);
+
+    Yoroutine *get_yc();
 
 private:
     int size;
