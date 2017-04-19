@@ -17,7 +17,7 @@ public:
     size_t stack_size;
     ucontext_t main;
 
-    Scheduler(int s_size, int init_cap);
+    static Scheduler* getInstance();
 
     ~Scheduler();
 
@@ -45,8 +45,9 @@ private:
 
     Yoroutine **yc_list;
 
-};
+    Scheduler(int s_size, int init_cap);
 
-static Scheduler *root = new Scheduler(STACK_SIZE, INIT_CAPACITY);
+    static Scheduler* root;
+};
 
 #endif //OS_SCHEDULER_H

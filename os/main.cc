@@ -4,12 +4,13 @@ struct Args {
     int n;
 };
 
+Scheduler * root = Scheduler::getInstance();
+
 void foo(void *ud) {
     Args *arg = (Args *) ud;
     int start = arg->n;
-    int i;
     int id = root->get_cur_id();
-    for (i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; i++) {
         printf("yoroutine %d : %d\n", id, start + i);
         root->get_yc(id)->yield();
     }

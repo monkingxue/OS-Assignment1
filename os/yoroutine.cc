@@ -1,6 +1,7 @@
 #include "yoroutine.h"
 
 Yoroutine::Yoroutine(yc_fn func, void *arg) {
+    Scheduler* root = Scheduler::getInstance();
     int new_id = root->assign_size();
 
     this->scheduler = root;
