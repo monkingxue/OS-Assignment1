@@ -4,6 +4,7 @@ struct Args {
     int n;
 };
 
+
 Scheduler * root = Scheduler::getInstance();
 
 void foo(void *ud) {
@@ -17,6 +18,7 @@ void foo(void *ud) {
 }
 
 void test() {
+
     Args arg1 = {0};
     Args arg2 = {100};
 

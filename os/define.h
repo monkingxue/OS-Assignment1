@@ -3,6 +3,7 @@
 
 #include <setjmp.h>
 #include <cstring>
+#include <stdint.h>
 
 #if __APPLE__ && __MACH__
 
