@@ -75,10 +75,6 @@ void Yoroutine::resume() {
 
 void Yoroutine::_pause(int to_status) {
 
-    if ((char *) this <= scheduler->stack) {
-        errPrint("Current yoroutine has run out of available stack");
-        return;
-    }
     if (!_save_stack()) {
         errPrint("Failed to save stack before pausing a yoroutine");
         return;
