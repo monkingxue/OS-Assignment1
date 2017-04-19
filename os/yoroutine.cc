@@ -67,7 +67,6 @@ void Yoroutine::resume() {
             break;
         }
 
-            break;
         default:
             break;
     }
@@ -110,7 +109,7 @@ void Yoroutine::_wrap_fn(uint32_t low_bits, uint32_t high_bits) {
     Yoroutine *cryc = (Yoroutine *) arg_ptr;
     cryc->func(cryc->arg);
 
-    _compress_yclist(cryc->scheduler->get_cur_id());
+    cryc->_compress_yclist(cryc->scheduler->get_cur_id());
 
     cryc->scheduler->set_cur_id(DUMMY_YOROUTINE_ID);
 
