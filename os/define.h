@@ -2,6 +2,7 @@
 #define OS_DEFINE_H_
 
 #include <setjmp.h>
+#include <stdint.h>
 
 #if __APPLE__ && __MACH__
 
@@ -33,6 +34,9 @@ int swapcontext(ucontext_t *, const ucontext_t *);
 #define YOROUTINE_BLOCKED 4
 
 #define DUMMY_YOROUTINE_ID -1
+
+class Yoroutine;
+class Scheduler;
 
 #endif
 
