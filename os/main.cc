@@ -1,4 +1,4 @@
-#include "test/step_by_step.h"
+#include "test/p_to_c.h"
 
 int main(int argc, char *argv[]) {
     test();

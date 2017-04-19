@@ -3,10 +3,6 @@
 
 #include "test.h"
 
-struct Args {
-    int n;
-};
-
 void foo(void *ud) {
     Args *arg = (Args *) ud;
     int start = arg->n;
