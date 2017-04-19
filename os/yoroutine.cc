@@ -1,9 +1,9 @@
 #include "yoroutine.h"
 
-Yoroutine::Yoroutine(yc_fn func, void *arg) {
-    int new_id = root->assign_size();
+Yoroutine::Yoroutine(Scheduler* s, yc_fn func, void *arg) {
+    int new_id = s->assign_size();
 
-    this->scheduler = root;
+    this->scheduler = s;
     this->stack = nullptr;
     this->stack_size = 0;
     this->func = func;
@@ -31,19 +31,19 @@ void Yoroutine::resume() {
 
     Yoroutine *cryc = scheduler->get_yc(id);
     if (cryc == nullptr) {
-        errPrint(" Could not resume a null yoroutine");
+        errPrint("Could not resume a null yoroutine");
         return;
     }
 
-    switch (status) {
-        case YOROUTINE_READY:
+    switch (this->status) {
+        case YOROUTINE_READY: {
             getcontext(&ctx);
+            uintptr_t arg_ptr = (uintptr_t) this;
             ctx.uc_stack.ss_size = scheduler->stack_size;
             ctx.uc_stack.ss_sp = scheduler->stack;
             ctx.uc_link = &scheduler->main;
             status = YOROUTINE_RUNNING;
             scheduler->set_cur_id(id);
-            uintptr_t arg_ptr = (uintptr_t) this;
             makecontext(
                     &ctx,
                     (void (*)(void)) _wrap_fn,
@@ -53,10 +53,18 @@ void Yoroutine::resume() {
             );
             swapcontext(&scheduler->main, &ctx);
             break;
-
+        }
         case YOROUTINE_SUSPENDED:
-
+            memcpy(
+                    scheduler->stack + STACK_SIZE - this->stack_size,
+                    this->stack,
+                    this->stack_size
+            );
+            this->status = YOROUTINE_RUNNING;
+            scheduler->set_cur_id(this->id);
+            swapcontext(&scheduler->main, &ctx);
             break;
+
         default:
             break;
     }
@@ -65,11 +73,11 @@ void Yoroutine::resume() {
 void Yoroutine::_pause(int to_status) {
 
     if ((char *) this <= scheduler->stack) {
-        errPrint("ERROR: Current yoroutine has run out of available stack");
+        errPrint("Current yoroutine has run out of available stack");
         return;
     }
-    if (_save_stack() != 0) {
-        errPrint("ERROR: Failed to save stack before pausing a yoroutine");
+    if (!_save_stack()) {
+        errPrint("Failed to save stack before pausing a yoroutine");
         return;
     }
     this->status = to_status;
@@ -97,9 +105,9 @@ void Yoroutine::_compress_yclist(int idx) {
 void Yoroutine::_wrap_fn(uint32_t low_bits, uint32_t high_bits) {
     uintptr_t arg_ptr = (uintptr_t) low_bits | (uintptr_t) high_bits << 32;
     Yoroutine *cryc = (Yoroutine *) arg_ptr;
-    cryc->func(cryc->arg);
+    cryc->func(cryc->arg, cryc);
 
-    _compress_yclist(cryc->scheduler->get_cur_id());
+    cryc->_compress_yclist(cryc->scheduler->get_cur_id());
 
     cryc->scheduler->set_cur_id(DUMMY_YOROUTINE_ID);
 
@@ -117,7 +125,13 @@ bool Yoroutine::_save_stack() {
         errPrint("Failed to new space to save stack");
         return false;
     }
-    memcpy(this->stack, &dummy, sizeof(char) * this->stack_size);
+
+    try {
+        memcpy(this->stack, &dummy, sizeof(char) * this->stack_size);
+    } catch (std::exception &e) {
+        errPrint("Failed to copy memory to stack of yoroutine.");
+        return false;
+    }
 
     return true;
 }

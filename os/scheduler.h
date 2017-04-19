@@ -47,6 +47,4 @@ private:
 
 };
 
-static Scheduler *root = new Scheduler(STACK_SIZE, INIT_CAPACITY);
-
 #endif //OS_SCHEDULER_H

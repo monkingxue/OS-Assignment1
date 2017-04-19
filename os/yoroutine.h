@@ -8,7 +8,7 @@
 #include "scheduler.h"
 #include "tool.h"
 
-typedef void (*yc_fn)(void *arg);
+typedef void (*yc_fn)(void *arg, Yoroutine *);
 
 class Yoroutine {
 public:
@@ -18,7 +18,7 @@ public:
     int status;
     int id;
 
-    Yoroutine(yc_fn func, void *arg);
+    Yoroutine(Scheduler* s, yc_fn func, void *arg);
 
     ~Yoroutine();
 
@@ -41,7 +41,7 @@ private:
 
     void _compress_yclist(int idx);
 
-    void _wrap_fn(uint32_t low_bits, uint32_t high_bits);
+    static void _wrap_fn(uint32_t low_bits, uint32_t high_bits);
 
 };
 
