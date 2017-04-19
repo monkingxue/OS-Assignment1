@@ -36,7 +36,7 @@ void Yoroutine::resume() {
     }
 
     switch (status) {
-        case YOROUTINE_READY:
+        case YOROUTINE_READY: {
             getcontext(&ctx);
             ctx.uc_stack.ss_size = scheduler->stack_size;
             ctx.uc_stack.ss_sp = scheduler->stack;
@@ -46,15 +46,26 @@ void Yoroutine::resume() {
             uintptr_t arg_ptr = (uintptr_t) this;
             makecontext(
                     &ctx,
-                    (void (*)(void)) _wrap_fn,
+                    (void (*)(void))_wrap_fn,
                     2,
                     (uint32_t) arg_ptr,
                     (uint32_t) (arg_ptr >> 32)
             );
             swapcontext(&scheduler->main, &ctx);
             break;
+        }
 
-        case YOROUTINE_SUSPENDED:
+        case YOROUTINE_SUSPENDED: {
+            memcpy(
+                    scheduler->stack + STACK_SIZE - this->stack_size,
+                    this->stack,
+                    this->stack_size
+            );
+            this->status = YOROUTINE_RUNNING;
+            scheduler->set_cur_id(this->id);
+            swapcontext(&scheduler->main, &ctx);
+            break;
+        }
 
             break;
         default:
