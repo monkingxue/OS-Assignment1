@@ -32,7 +32,7 @@ void Yoroutine::resume() {
 
     Yoroutine *cryc = scheduler->get_yc(id);
     if (cryc == nullptr) {
-        errPrint(" Could not resume a null yoroutine");
+        errPrint("Could not resume a null yoroutine");
         return;
     }
 
@@ -76,11 +76,11 @@ void Yoroutine::resume() {
 void Yoroutine::_pause(int to_status) {
 
     if ((char *) this <= scheduler->stack) {
-        errPrint("ERROR: Current yoroutine has run out of available stack");
+        errPrint("Current yoroutine has run out of available stack");
         return;
     }
-    if (_save_stack() != 0) {
-        errPrint("ERROR: Failed to save stack before pausing a yoroutine");
+    if (!_save_stack()) {
+        errPrint("Failed to save stack before pausing a yoroutine");
         return;
     }
     this->status = to_status;
