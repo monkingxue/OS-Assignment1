@@ -41,7 +41,7 @@ private:
 
     void _compress_yclist(int idx);
 
-    void _wrap_fn(uint32_t low_bits, uint32_t high_bits);
+    static void _wrap_fn(uint32_t low_bits, uint32_t high_bits);
 
 };
 

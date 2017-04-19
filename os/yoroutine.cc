@@ -1,6 +1,7 @@
 #include "yoroutine.h"
 
 Yoroutine::Yoroutine(yc_fn func, void *arg) {
+    Scheduler* root = Scheduler::getInstance();
     int new_id = root->assign_size();
 
     this->scheduler = root;
@@ -31,12 +32,12 @@ void Yoroutine::resume() {
 
     Yoroutine *cryc = scheduler->get_yc(id);
     if (cryc == nullptr) {
-        errPrint(" Could not resume a null yoroutine");
+        errPrint("Could not resume a null yoroutine");
         return;
     }
 
     switch (status) {
-        case YOROUTINE_READY:
+        case YOROUTINE_READY: {
             getcontext(&ctx);
             ctx.uc_stack.ss_size = scheduler->stack_size;
             ctx.uc_stack.ss_sp = scheduler->stack;
@@ -46,17 +47,27 @@ void Yoroutine::resume() {
             uintptr_t arg_ptr = (uintptr_t) this;
             makecontext(
                     &ctx,
-                    (void (*)(void)) _wrap_fn,
+                    (void (*)(void))_wrap_fn,
                     2,
                     (uint32_t) arg_ptr,
                     (uint32_t) (arg_ptr >> 32)
             );
             swapcontext(&scheduler->main, &ctx);
             break;
+        }
 
-        case YOROUTINE_SUSPENDED:
-
+        case YOROUTINE_SUSPENDED: {
+            memcpy(
+                    scheduler->stack + STACK_SIZE - this->stack_size,
+                    this->stack,
+                    this->stack_size
+            );
+            this->status = YOROUTINE_RUNNING;
+            scheduler->set_cur_id(this->id);
+            swapcontext(&scheduler->main, &ctx);
             break;
+        }
+
         default:
             break;
     }
@@ -64,12 +75,8 @@ void Yoroutine::resume() {
 
 void Yoroutine::_pause(int to_status) {
 
-    if ((char *) this <= scheduler->stack) {
-        errPrint("ERROR: Current yoroutine has run out of available stack");
-        return;
-    }
-    if (_save_stack() != 0) {
-        errPrint("ERROR: Failed to save stack before pausing a yoroutine");
+    if (!_save_stack()) {
+        errPrint("Failed to save stack before pausing a yoroutine");
         return;
     }
     this->status = to_status;
@@ -99,7 +106,7 @@ void Yoroutine::_wrap_fn(uint32_t low_bits, uint32_t high_bits) {
     Yoroutine *cryc = (Yoroutine *) arg_ptr;
     cryc->func(cryc->arg);
 
-    _compress_yclist(cryc->scheduler->get_cur_id());
+    cryc->_compress_yclist(cryc->scheduler->get_cur_id());
 
     cryc->scheduler->set_cur_id(DUMMY_YOROUTINE_ID);
 

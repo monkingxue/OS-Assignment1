@@ -1,5 +1,15 @@
 #include "scheduler.h"
 
+Scheduler* Scheduler::root;
+
+Scheduler* Scheduler::getInstance() {
+    if(root == nullptr){
+        root = new Scheduler(STACK_SIZE, INIT_CAPACITY);
+    }
+    return root;
+}
+
+
 Scheduler::Scheduler(int s_size, int init_cap) {
     size_t stack_bytes_size = sizeof(char) * s_size;
     size_t yclist_bytes_size = sizeof(Yoroutine *) * init_cap;

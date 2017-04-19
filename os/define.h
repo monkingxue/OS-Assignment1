@@ -2,6 +2,7 @@
 #define OS_DEFINE_H_
 
 #include <setjmp.h>
+#include <cstring>
 #include <stdint.h>
 
 #if __APPLE__ && __MACH__
@@ -20,7 +21,9 @@ int swapcontext(ucontext_t *, const ucontext_t *);
 
 
 #else
+extern "C" {
 #include <ucontext.h>
+}
 #endif
 
 // constants for yoroutines
@@ -35,8 +38,8 @@ int swapcontext(ucontext_t *, const ucontext_t *);
 
 #define DUMMY_YOROUTINE_ID -1
 
-class Yoroutine;
 class Scheduler;
+class Yoroutine;
 
 #endif
 

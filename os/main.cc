@@ -4,23 +4,26 @@ struct Args {
     int n;
 };
 
-void foo(void *ud, Yoroutine *cryc) {
+
+Scheduler * root = Scheduler::getInstance();
+
+void foo(void *ud) {
     Args *arg = (Args *) ud;
     int start = arg->n;
-    int i;
-    for (i = 0; i < 5; i++) {
-        printf("yoroutine %d : %d\n", cryc->id, start + i);
-        cryc->yield();
+    int id = root->get_cur_id();
+    for (int i = 0; i < 5; i++) {
+        printf("yoroutine %d : %d\n", id, start + i);
+        root->get_yc(id)->yield();
     }
 }
 
 void test() {
-    Scheduler *root = new Scheduler(STACK_SIZE, INIT_CAPACITY);
+
     Args arg1 = {0};
     Args arg2 = {100};
-    int t = 100;
-    Yoroutine *yo1 = new Yoroutine(root, foo, &arg1);
-    Yoroutine *yo2 = new Yoroutine(root, foo, &arg2);
+
+    Yoroutine *yo1 = new Yoroutine(foo, &arg1);
+    Yoroutine *yo2 = new Yoroutine(foo, &arg2);
     printf("main start\n");
 
     while (yo1->get_status() && yo2->get_status()) {
