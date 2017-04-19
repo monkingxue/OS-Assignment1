@@ -52,7 +52,7 @@ void Scheduler::enlarge_yc_list() {
 
 int Scheduler::assign_size() {
     int new_id = get_size();
-    set_size();
+    set_size(1);
     return new_id;
 }
 
@@ -66,4 +66,10 @@ void Scheduler::push_yc(Yoroutine *yc) {
     }
 
     this->yc_list[yc->id] = yc;
+}
+
+void Scheduler::set_yc(int pos, Yoroutine *yc) {
+    if(pos < 0 && pos >= this->capaity)
+        return;
+    this->yc_list[pos] = yc;
 }

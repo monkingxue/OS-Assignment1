@@ -29,11 +29,13 @@ public:
 
     int get_size() { return this->size; }
 
-    void set_size() { this->size += 1; }
+    void set_size(int num) { this->size += num; }
 
     int assign_size();
 
     void push_yc(Yoroutine *yc);
+
+    void set_yc(int pos, Yoroutine *yc);
 
     Yoroutine *get_yc(int id) { return this->yc_list[id]; }
 

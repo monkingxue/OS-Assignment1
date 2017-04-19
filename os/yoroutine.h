@@ -24,8 +24,6 @@ public:
 
     int get_status();
 
-    bool set_status();
-
     void resume();
 
     void yield() { _pause(YOROUTINE_SUSPENDED); }
@@ -39,7 +37,7 @@ private:
 
     void _pause(int to_status);
 
-    int _save_stack();
+    bool _save_stack();
 
     void _compress_yclist(int idx);
 
