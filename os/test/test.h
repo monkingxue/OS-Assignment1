@@ -8,17 +8,15 @@
 #include <stdio.h>
 #include "../yoroutine.h"
 
-#define YIELD root->get_yc(root->get_cur_id())->yield()
-
 struct Args {
     int n;
 };
 
-void safe_resume(Yoroutine* cryc) {
-    if(cryc->get_status())
+void safe_resume(Yoroutine *cryc) {
+    if (cryc->get_status())
         cryc->resume();
 }
 
-Scheduler * root = Scheduler::getInstance();
+Scheduler *root = Scheduler::getInstance();
 
 #endif //OS_TEST_H

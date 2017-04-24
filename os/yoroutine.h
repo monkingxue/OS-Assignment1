@@ -45,4 +45,6 @@ private:
 
 };
 
+#define YIELD root->get_yc(root->get_cur_id())->yield()
+
 #endif //OS_YOROUTINE_H

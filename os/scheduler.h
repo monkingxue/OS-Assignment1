@@ -17,7 +17,7 @@ public:
     size_t stack_size;
     ucontext_t main;
 
-    static Scheduler* getInstance();
+    static Scheduler *getInstance();
 
     ~Scheduler();
 
@@ -47,7 +47,7 @@ private:
 
     Scheduler(int s_size, int init_cap);
 
-    static Scheduler* root;
+    static Scheduler *root;
 };
 
 #endif //OS_SCHEDULER_H

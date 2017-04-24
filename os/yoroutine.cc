@@ -1,7 +1,7 @@
 #include "yoroutine.h"
 
 Yoroutine::Yoroutine(yc_fn func, void *arg) {
-    Scheduler* root = Scheduler::getInstance();
+    Scheduler *root = Scheduler::getInstance();
     int new_id = root->assign_size();
 
     this->scheduler = root;
@@ -47,7 +47,7 @@ void Yoroutine::resume() {
             uintptr_t arg_ptr = (uintptr_t) this;
             makecontext(
                     &ctx,
-                    (void (*)(void))_wrap_fn,
+                    (void (*)(void)) _wrap_fn,
                     2,
                     (uint32_t) arg_ptr,
                     (uint32_t) (arg_ptr >> 32)

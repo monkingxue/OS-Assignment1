@@ -1,9 +1,9 @@
 #include "scheduler.h"
 
-Scheduler* Scheduler::root;
+Scheduler *Scheduler::root;
 
-Scheduler* Scheduler::getInstance() {
-    if(root == nullptr){
+Scheduler *Scheduler::getInstance() {
+    if (root == nullptr) {
         root = new Scheduler(STACK_SIZE, INIT_CAPACITY);
     }
     return root;
@@ -38,7 +38,7 @@ Scheduler::Scheduler(int s_size, int init_cap) {
 Scheduler::~Scheduler() {
     for (int i = 0; i < this->size; i++) {
         Yoroutine *yc = this->yc_list[i];
-        if(yc != nullptr) {
+        if (yc != nullptr) {
             free(yc->stack);
             yc->stack = nullptr;
             delete yc;
@@ -79,7 +79,7 @@ void Scheduler::push_yc(Yoroutine *yc) {
 }
 
 void Scheduler::set_yc(int pos, Yoroutine *yc) {
-    if(pos < 0 && pos >= this->capaity)
+    if (pos < 0 && pos >= this->capaity)
         return;
     this->yc_list[pos] = yc;
 }
