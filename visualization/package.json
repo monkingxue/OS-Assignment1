@@ -11,7 +11,6 @@
   "license": "MIT",
   "devDependencies": {
     "bindings": "^1.2.1",
-    "eslint": "^3.19.0",
     "node-gyp": "^3.6.0"
   },
   "dependencies": {

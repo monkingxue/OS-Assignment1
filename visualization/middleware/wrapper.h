@@ -7,8 +7,10 @@
 class Args {
 public:
     double num;
-    Args(double _num):num(_num){}
-    ~Args(){}
+
+    Args(double _num) : num(_num) {}
+
+    ~Args() {}
 };
 
 class Wrapper : public node::ObjectWrap {
@@ -16,7 +18,7 @@ public:
     static void Init(Handle <Object> exports);
 
 private:
-    explicit Wrapper(yc_fn func, Args * args);
+    explicit Wrapper(yc_fn func, Args *args);
 
     ~Wrapper();
 
@@ -30,7 +32,7 @@ private:
 
     static Persistent <Function> constructor;
 
-    Yoroutine * cyr;
+    Yoroutine *cyr;
 
 };
 
