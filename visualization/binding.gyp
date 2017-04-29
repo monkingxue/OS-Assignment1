@@ -2,7 +2,10 @@
   "targets": [
     {
       "target_name": "addon",
-      "sources": [ "middleware/addon.cc" ]
+      "sources": [
+        "middleware/addon.cc",
+        "middleware/wrapper.cc"
+      ]
     }
   ]
 }
