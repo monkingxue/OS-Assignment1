@@ -3,12 +3,13 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <functional>
 
 #include "define.h"
 #include "scheduler.h"
 #include "tool.h"
 
-typedef void (*yc_fn)(void *arg);
+typedef std::function<void(void *)> yc_fn;
 
 class Yoroutine {
 public:
