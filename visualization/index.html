@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OS-Assignment1</title>
+    <link rel="stylesheet" href="node_modules/normalize.css/normalize.css">
+    <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
+    <script async defer src="node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+<style>
+    @media (min-width: 650px) {
+        html {
+            height: 100%;
+        }
+
+        html:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -0.25em;
+        }
+
+        body {
+            display: inline-block;
+            vertical-align: middle;
+            max-width: 38rem;
+        }
+    }
+
+    .title {
+        color: #f35626;
+        background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -webkit-animation: hue 60s infinite linear;
+    }
+
+    @-webkit-keyframes hue {
+        from {
+            -webkit-filter: hue-rotate(0deg);
+        }
+
+        to {
+            -webkit-filter: hue-rotate(-360deg);
+        }
+    }
+
+</style>
+<body>
+<h1 class="title">head</h1>
+<div>hello</div>
+</body>
+<script>
+
+</script>
+</html>
