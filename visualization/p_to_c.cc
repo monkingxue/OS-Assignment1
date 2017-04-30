@@ -1,11 +1,14 @@
 #include "p_to_c.h"
 
-void write(void * arg) {
-    while(1) {
-        if(resource.size() <= maxLen) {
-            resource.push_back(random(range));
-            YIELD;
+void write(void *) {
+
+    for (int x = 0; x < 3; x++) {
+        int num = random(9, 1);
+        for (int y = 0; y < num; y++) {
+            int result = random(300);
+            resource.push_back(result);
         }
+        YIELD;
     }
 }
 
@@ -14,7 +17,7 @@ void read(void *arg) {
         if (!resource.empty()) {
             resource.pop_back();
             YIELD;
-        }
+        } else break;
     }
 }
 

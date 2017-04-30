@@ -5,6 +5,3 @@ void initAll(Handle<Object> exports) {
 }
 
 NODE_MODULE(addon, initAll);
-
-
-
