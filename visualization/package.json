@@ -2,7 +2,7 @@
   "name": "visualization",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "build": "rm -rf ./build && ./node_modules/.bin/node-gyp configure && ./node_modules/.bin/node-gyp build --debug",
     "build-xc": "rm -rf ./build && ./node_modules/.bin/node-gyp configure -- -f xcode",
@@ -15,8 +15,7 @@
     "node-gyp": "^3.6.0"
   },
   "dependencies": {
-    "animate.css": "^3.5.2",
-    "jquery": "^3.2.1",
-    "normalize.css": "^6.0.0"
+    "normalize.css": "^6.0.0",
+    "vue": "^2.3.0"
   }
 }

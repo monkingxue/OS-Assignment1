@@ -1,7 +1,7 @@
 #ifndef VISUALIZATION_P_TO_C_H
 #define VISUALIZATION_P_TO_C_H
 
-#include <vector>
+#include <list>
 #include <stdlib.h>
 #include <time.h>
 #include <chrono>
@@ -25,9 +25,10 @@ void safe_resume(Yoroutine *cryc) {
         cryc->resume();
 }
 
-const unsigned int maxLen = 20;
+const unsigned int maxLen = 15;
 const unsigned int range = 500;
 
-std::vector<int> resource;
+std::list<int> resource;
+std::list<int>::iterator itor;
 
 #endif //VISUALIZATION_P_TO_C_H
