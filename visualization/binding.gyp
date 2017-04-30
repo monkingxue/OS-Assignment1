@@ -3,13 +3,12 @@
     {
       "target_name": "addon",
       "sources": [
-        "middleware/addon.cc",
-        "middleware/wrapper.cc",
+        "p_to_c.cc",
+        "../os/scheduler.cc",
         "../os/yoroutine.cc",
-        "../os/scheduler.cc"
       ],
-      "cflags!": ["-fexceptions"],
-      "cflags_cc!": ["-fexceptions"],
+      "cflags!": ["-fno-exceptions"],
+      "cflags_cc!": ["-fno-exceptions"],
       "conditions": [
         ["OS=='mac'", {
           "xcode_settings": {
