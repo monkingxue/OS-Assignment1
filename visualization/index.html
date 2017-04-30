@@ -51,7 +51,16 @@
 <h1 class="title">head</h1>
 <div>hello</div>
 </body>
-<script>
+<script type="text/javascript">
+  const es = new EventSource("http://localhost:3030/data");
 
+  es.onmessage = (e) => {
+    console.log(e.data);
+  };
+
+  es.onerror = (e) => {
+    console.log(`Error code is ${es.readyState}`);
+    es.close();
+  }
 </script>
 </html>
