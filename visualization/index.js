@@ -1,5 +1,5 @@
 let addon = require("bindings")("addon");
 
-addon.test(function (arr) {
-    console.log(arr.length);
-})
+addon.test(function (item) {
+    console.log(item)
+});

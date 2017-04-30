@@ -51,16 +51,16 @@ void test(const FunctionCallbackInfo <Value> &args) {
     Isolate *isolate = Isolate::GetCurrent();
     HandleScope scope(isolate);
 
-    Local <Function> callback = Local<Function>::Cast(args[1]);
+    Local <Function> callback = Local<Function>::Cast(args[0]);
 
     Yoroutine *reader = new Yoroutine(read, nullptr);
     Yoroutine *writer = new Yoroutine(write, nullptr);
 
     srand((unsigned int) time(0));
 
-    while (reader->get_status() || writer->get_status()) {
-        int rand_num = rand() % 2;
-        if (rand_num == 1)
+    while (writer->get_status() || reader->get_status()) {
+        int rand_num = rand() % 10;
+        if (rand_num <= 4)
             safe_resume(writer);
         else
             safe_resume(reader);

@@ -75,7 +75,7 @@ void Wrapper::Resume(const jsArgs args) {
     HandleScope scope(isolate);
 
     Wrapper *wp = ObjectWrap::Unwrap<Wrapper>(args.Holder());
-
+    printf("ok");
     if (wp->cyr->get_status())
         wp->cyr->resume();
 }
