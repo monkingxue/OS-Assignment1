@@ -24,18 +24,18 @@
     el: '#list-demo',
     data: {
       items: [],
-        es: new EventSource("http://localhost:3030/data")
+      es: new EventSource("http://localhost:3030/data")
     },
-      created() {
-        this.es.onmessage = (e) => {
-            this.items = e.data.split(",");
-        };
+    created() {
+      this.es.onmessage = (e) => {
+        this.items = e.data.split(",");
+      };
 
-          this.es.onerror = (e) => {
-              console.log(`Error code is ${this.es.readyState}`);
-              this.es.close();
-          };
-      }
+      this.es.onerror = (e) => {
+        console.log(`Error code is ${this.es.readyState}`);
+        this.es.close();
+      };
+    }
   })
 </script>
 </html>

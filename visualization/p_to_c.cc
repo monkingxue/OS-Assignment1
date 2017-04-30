@@ -38,7 +38,7 @@ void read_back(void *arg) {
 
 void test(const FunctionCallbackInfo <Value> &args) {
 
-    const unsigned long delay = 1500;
+    const unsigned long delay = 1800;
     srand((unsigned int) time(0));
 
     for(int i = 0; i < 10; i++)
