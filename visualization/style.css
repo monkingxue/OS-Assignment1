@@ -7,6 +7,7 @@
 
 .title {
     color: #f35626;
+    font-weight: lighter;
     background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
