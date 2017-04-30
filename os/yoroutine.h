@@ -3,12 +3,13 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <functional>
 
 #include "define.h"
 #include "scheduler.h"
 #include "tool.h"
 
-typedef void (*yc_fn)(void *arg);
+typedef std::function<void(void *)> yc_fn;
 
 class Yoroutine {
 public:
@@ -44,5 +45,7 @@ private:
     static void _wrap_fn(uint32_t low_bits, uint32_t high_bits);
 
 };
+
+#define YIELD root->get_yc(root->get_cur_id())->yield()
 
 #endif //OS_YOROUTINE_H

@@ -39,6 +39,7 @@ extern "C" {
 #define DUMMY_YOROUTINE_ID -1
 
 class Scheduler;
+
 class Yoroutine;
 
 #endif
