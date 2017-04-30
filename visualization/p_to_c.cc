@@ -1,40 +1,11 @@
-#include <vector>
-#include <stdlib.h>
-#include <time.h>
-#include <node.h>
-#include <v8.h>
+#include "p_to_c.h"
 
-#include "../os/yoroutine.h"
-
-using namespace v8;
-
-struct Args {
-    int n;
-};
-
-Scheduler *root = Scheduler::getInstance();
-
-static std::vector<double> resource;
-
-int random(int max, int min = 0) {
-    return min + rand() % (max - min);
-}
-
-void safe_resume(Yoroutine *cryc) {
-    if (cryc->get_status())
-        cryc->resume();
-}
-
-
-void write(void *) {
-
-    for (int x = 0; x < 3; x++) {
-        int num = random(9, 1);
-        for (int y = 0; y < num; y++) {
-            int result = random(300);
-            resource.push_back(result);
+void write(void * arg) {
+    while(1) {
+        if(resource.size() <= maxLen) {
+            resource.push_back(random(range));
+            YIELD;
         }
-        YIELD;
     }
 }
 
@@ -43,11 +14,18 @@ void read(void *arg) {
         if (!resource.empty()) {
             resource.pop_back();
             YIELD;
-        } else break;
+        }
     }
 }
 
 void test(const FunctionCallbackInfo <Value> &args) {
+
+    const unsigned long delay = 1000;
+    srand((unsigned int) time(0));
+
+    for(int i = 0; i < 5; i++)
+        resource.push_back(random(range));
+
     Isolate *isolate = Isolate::GetCurrent();
     HandleScope scope(isolate);
 
@@ -56,11 +34,10 @@ void test(const FunctionCallbackInfo <Value> &args) {
     Yoroutine *reader = new Yoroutine(read, nullptr);
     Yoroutine *writer = new Yoroutine(write, nullptr);
 
-    srand((unsigned int) time(0));
-
     while (writer->get_status() || reader->get_status()) {
+
         int rand_num = rand() % 10;
-        if (rand_num <= 4)
+        if (rand_num < 5)
             safe_resume(writer);
         else
             safe_resume(reader);
@@ -74,6 +51,8 @@ void test(const FunctionCallbackInfo <Value> &args) {
         }()};
 
         callback->Call(isolate->GetCurrentContext()->Global(), 1, argv);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
     }
 }
 
