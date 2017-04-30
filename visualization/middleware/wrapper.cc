@@ -13,7 +13,7 @@ void Wrapper::Init(Handle <Object> exports) {
     Isolate *isolate = Isolate::GetCurrent();
 
     Local <FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);
-    tpl->SetClassName(String::NewFromUtf8(isolate, "JSYoroutine"));
+    tpl->SetClassName(String::NewFromUtf8(isolate, "Wrapper"));
     tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
     NODE_SET_PROTOTYPE_METHOD(tpl, "getStatus", Get_Status);
